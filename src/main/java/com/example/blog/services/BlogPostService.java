@@ -1,7 +1,6 @@
 package com.example.blog.services;
 
 import com.example.blog.entities.BlogPost;
-import com.example.blog.entities.User;
 import com.example.blog.models.blog_post.BlogPostRequest;
 import com.example.blog.models.blog_post.BlogPostResponse;
 import com.example.blog.repositories.BlogPostRepository;
@@ -10,7 +9,6 @@ import com.example.blog.shared.helpers.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +18,15 @@ public class BlogPostService
 {
     private  final BlogPostRepository BlogPostRepository;
     private  final  UserService userService;
+    private  final CommentService commentService;
 
     private static final Logger logger= LoggerFactory.getLogger(BlogPostService.class);
     @Autowired
-    public BlogPostService(BlogPostRepository BlogPostRepository, UserService userService){
+    public BlogPostService(BlogPostRepository BlogPostRepository, UserService userService, CommentService commentService){
 
         this.BlogPostRepository = BlogPostRepository;
         this.userService = userService;
+        this.commentService = commentService;
     }
 
     public List<BlogPostResponse> GetBlogPosts(){
@@ -41,6 +41,8 @@ public class BlogPostService
         logger.info("Getting BlogPost {}", id);
         var BlogPost= BlogPostRepository.findById(id)
                 .orElseThrow(()-> new BlogException("BlogPost not found"));
+
+        //List<BlogPost> comments= commentService.findByA();
         return  new BlogPostResponse(BlogPost);
     }
 

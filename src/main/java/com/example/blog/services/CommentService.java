@@ -5,7 +5,6 @@ import com.example.blog.models.comment.CommentRequest;
 import com.example.blog.models.comment.CommentResponse;
 import com.example.blog.repositories.BlogPostRepository;
 import com.example.blog.repositories.CommentRepository;
-import com.example.blog.repositories.CommentRepository;
 import com.example.blog.repositories.UserRepository;
 import com.example.blog.shared.exceptions.BlogException;
 import com.example.blog.shared.helpers.StringHelper;
@@ -22,14 +21,16 @@ public class CommentService
     private  final CommentRepository commentRepository;
     private  final UserRepository userRepository;
     private  final BlogPostRepository blogPostRepository;
+    private  final  UserService userService;
 
     private static final Logger logger= LoggerFactory.getLogger(CommentService.class);
     @Autowired
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository, BlogPostRepository blogPostRepository){
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository, BlogPostRepository blogPostRepository, UserService userService){
 
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.blogPostRepository = blogPostRepository;
+        this.userService = userService;
     }
 
     public List<CommentResponse> GetComments(){
@@ -58,8 +59,9 @@ public class CommentService
 //            logger.error("Comment already exists");
 //            throw  new BlogException("Comment already exists");
 //        }
-        var user= userRepository.findById(commentRequest.getUserId())
-                .orElseThrow(()-> new BlogException("User not found"));
+        var user= userService.GetUserContext();
+//                userRepository.findById(commentRequest.getUserId())
+//                .orElseThrow(()-> new BlogException("User not found"));
         var blogPost= blogPostRepository.findById(commentRequest.getBlogPostId())
                 .orElseThrow(()-> new BlogException("Blog post not found"));
 
@@ -95,8 +97,8 @@ public class CommentService
     private  void ValidateCommentRequest(CommentRequest commentRequest) throws BlogException {
         if(StringHelper.StringIsNullOrEmpty(commentRequest.getText()))
             throw  new BlogException("Text is empty");
-        if(StringHelper.StringIsNullOrEmpty(commentRequest.getUserId()))
-            throw  new BlogException("User id is empty");
+//        if(StringHelper.StringIsNullOrEmpty(commentRequest.()))
+//            throw  new BlogException("User id is empty");
         if(StringHelper.StringIsNullOrEmpty(commentRequest.getBlogPostId()))
             throw new BlogException("Blog post is is empty");
     }

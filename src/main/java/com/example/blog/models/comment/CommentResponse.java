@@ -5,7 +5,7 @@ import com.example.blog.entities.Comment;
 public class CommentResponse
 {
     private String Id;
-    private String userId;
+    private String user;
     private String blogPostId;
     private String text;
 
@@ -13,7 +13,7 @@ public class CommentResponse
         if(comment==null)
             return;
         this.Id = comment.getId();
-        this.userId = comment.getCommenter().id;
+        this.user = comment.getCommenter().getUsername2();
         this.blogPostId = comment.getBlogPost().getId();
         this.text= comment.getText();
     }
@@ -26,12 +26,12 @@ public class CommentResponse
         Id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getBlogPostId() {

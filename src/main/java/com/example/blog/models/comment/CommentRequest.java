@@ -2,17 +2,17 @@ package com.example.blog.models.comment;
 
 public class CommentRequest
 {
-    private String userId;
+   // private String userId;
     private String blogPostId;
     private String text;
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+//    public String getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(String userId) {
+//        this.userId = userId;
+//    }
 
     public String getBlogPostId() {
         return blogPostId;
